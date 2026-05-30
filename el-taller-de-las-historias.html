@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Taller de las Historias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #f5f0e8;
+    --cream-dark: #ede5d4;
+    --ink: #2c2416;
+    --ink-light: #5a4e3a;
+    --red: #8b2020;
+    --red-light: #b03030;
+    --moss: #4a5e3a;
+    --moss-light: #6a7e55;
+    --stone: #7a7a7a;
+    --stone-light: #c8c0b0;
+    --gold: #b8913a;
+    --paper: #faf7f2;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--cream);
+    color: var(--ink);
+    font-family: 'Lora', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.8;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  * { position: relative; z-index: 1; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(245, 240, 232, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--stone-light);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav-brand {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    color: var(--ink);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Lora', serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-light);
+    text-decoration: none;
+    transition: color 0.2s;
+    font-style: italic;
+  }
+
+  .nav-links a:hover { color: var(--red); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero-bg-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--ink) 0,
+      var(--ink) 1px,
+      transparent 0,
+      transparent 50%
+    );
+    background-size: 12px 12px;
+  }
+
+  .ornament {
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--gold);
+    font-size: 1.4rem;
+    letter-spacing: 0.3em;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  h1 span {
+    color: var(--red);
+    display: block;
+  }
+
+  .hero-tagline {
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--ink-light);
+    max-width: 520px;
+    margin: 0 auto 3rem;
+    line-height: 1.9;
+  }
+
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--stone);
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    margin-bottom: 3rem;
+  }
+
+  .hero-divider::before,
+  .hero-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--stone-light));
+  }
+
+  .hero-divider::after {
+    background: linear-gradient(to left, transparent, var(--stone-light));
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 0.85rem 2.5rem;
+    background: var(--red);
+    color: var(--cream);
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-primary:hover {
+    background: var(--red-light);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    display: inline-block;
+    padding: 0.85rem 2.5rem;
+    background: transparent;
+    color: var(--ink);
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--ink);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: 1rem;
+  }
+
+  .btn-secondary:hover {
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--stone);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-family: 'Cinzel', serif;
+    animation: floatDown 2s ease-in-out infinite;
+  }
+
+  .scroll-hint::after {
+    content: '↓';
+    font-size: 1.1rem;
+  }
+
+  @keyframes floatDown {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 6rem 2rem;
+  }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--red);
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.25;
+    margin-bottom: 2rem;
+  }
+
+  .section-divider {
+    text-align: center;
+    color: var(--stone-light);
+    font-size: 1.1rem;
+    letter-spacing: 0.5em;
+    margin: 1.5rem 0 3rem;
+  }
+
+  /* ARTESANA */
+  #artesana { background: var(--paper); }
+
+  .artesana-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .artesana-text p {
+    color: var(--ink-light);
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+  }
+
+  .artesana-text p:first-of-type {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  .artesana-quote {
+    border-left: 3px solid var(--red);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--ink-light);
+    font-size: 1rem;
+  }
+
+  .artesana-image-frame {
+    position: relative;
+  }
+
+  .artesana-image-frame::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    right: 12px;
+    bottom: 12px;
+    border: 1px solid var(--stone-light);
+    z-index: 0;
+  }
+
+  .artesana-image-frame img {
+    width: 100%;
+    display: block;
+    position: relative;
+    z-index: 1;
+    filter: sepia(5%) contrast(1.02);
+  }
+
+  .artesana-image-placeholder {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: var(--cream-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    color: var(--stone);
+    font-style: italic;
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* OBRAS */
+  #obras { background: var(--cream); }
+
+  .filter-bar {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .filter-btn {
+    padding: 0.4rem 1.2rem;
+    border: 1px solid var(--stone-light);
+    background: transparent;
+    color: var(--ink-light);
+    font-family: 'Lora', serif;
+    font-size: 0.82rem;
+    font-style: italic;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover,
+  .filter-btn.active {
+    background: var(--ink);
+    color: var(--cream);
+    border-color: var(--ink);
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2.5rem;
+  }
+
+  .obra-card {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s;
+  }
+
+  .obra-card:hover { transform: translateY(-4px); }
+
+  .obra-img-wrap {
+    position: relative;
+    overflow: hidden;
+    background: var(--cream-dark);
+    aspect-ratio: 4/5;
+  }
+
+  .obra-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+    filter: sepia(5%) contrast(1.03);
+  }
+
+  .obra-card:hover .obra-img-wrap img {
+    transform: scale(1.04);
+  }
+
+  .obra-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.25rem 0.7rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .badge-disponible {
+    background: var(--moss);
+    color: var(--cream);
+  }
+
+  .badge-vendida {
+    background: rgba(44, 36, 22, 0.6);
+    color: var(--stone-light);
+  }
+
+  .badge-encargo {
+    background: var(--gold);
+    color: var(--ink);
+  }
+
+  .obra-info {
+    padding: 1.2rem 0 0;
+    border-top: 1px solid var(--stone-light);
+    margin-top: 1rem;
+  }
+
+  .obra-nombre {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+
+  .obra-historia {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    font-style: italic;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  .obra-materiales {
+    font-size: 0.75rem;
+    color: var(--stone);
+    letter-spacing: 0.05em;
+    font-family: 'Cinzel', serif;
+  }
+
+  .obra-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.8rem;
+  }
+
+  .obra-estado {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--stone);
+  }
+
+  .obra-cta {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+    cursor: pointer;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    padding: 0;
+  }
+
+  .obra-cta:hover { border-bottom-color: var(--red); }
+
+  /* ENCARGO */
+  #encargo { background: var(--ink); }
+
+  #encargo .section-label { color: var(--gold); }
+  #encargo h2 { color: var(--cream); }
+  #encargo .section-divider { color: #5a4e3a; }
+
+  .encargo-intro {
+    font-style: italic;
+    color: var(--stone-light);
+    font-size: 1rem;
+    max-width: 580px;
+    margin-bottom: 3rem;
+    line-height: 1.9;
+  }
+
+  .encargo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .form-group {
+    margin-bottom: 1.8rem;
+  }
+
+  .form-label {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stone-light);
+    margin-bottom: 0.6rem;
+  }
+
+  .form-input,
+  .form-textarea,
+  .form-select {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--cream);
+    font-family: 'Lora', serif;
+    font-size: 0.95rem;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.2s;
+    outline: none;
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+
+  .form-input:focus,
+  .form-textarea:focus,
+  .form-select:focus {
+    border-color: var(--gold);
+  }
+
+  .form-input::placeholder,
+  .form-textarea::placeholder {
+    color: rgba(245, 240, 232, 0.3);
+    font-style: italic;
+  }
+
+  .form-select option {
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  .form-textarea {
+    min-height: 130px;
+    resize: vertical;
+  }
+
+  .encargo-aside {
+    color: var(--stone-light);
+  }
+
+  .encargo-aside h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+
+  .encargo-aside ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .encargo-aside li {
+    font-size: 0.9rem;
+    font-style: italic;
+    line-height: 1.6;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .encargo-aside li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--red);
+  }
+
+  .encargo-note {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: rgba(200,192,176,0.6);
+    font-style: italic;
+  }
+
+  .btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 2rem;
+    background: var(--gold);
+    color: var(--ink);
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  .btn-whatsapp:hover {
+    background: #cfa84a;
+    transform: translateY(-1px);
+  }
+
+  .wa-icon {
+    font-size: 1rem;
+  }
+
+  /* PROCESO */
+  #proceso { background: var(--paper); }
+
+  .proceso-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    margin-top: 1rem;
+  }
+
+  .proceso-item {
+    text-align: center;
+  }
+
+  .proceso-num {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 3rem;
+    color: var(--stone-light);
+    line-height: 1;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .proceso-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 0.7rem;
+  }
+
+  .proceso-desc {
+    font-size: 0.88rem;
+    color: var(--ink-light);
+    font-style: italic;
+    line-height: 1.75;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: var(--stone-light);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .footer-brand {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.1rem;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .footer-tagline {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--stone);
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gold);
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 2rem;
+    transition: color 0.2s;
+  }
+
+  .footer-wa:hover { color: #cfa84a; }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: rgba(122, 122, 122, 0.5);
+    letter-spacing: 0.1em;
+  }
+
+  /* MODAL LIGHTBOX */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 16, 10, 0.92);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .lightbox.open { display: flex; }
+
+  .lightbox-inner {
+    max-width: 900px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .lightbox-img {
+    width: 100%;
+    display: block;
+  }
+
+  .lightbox-info { color: var(--cream); }
+
+  .lightbox-nombre {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .lightbox-historia {
+    font-style: italic;
+    color: var(--stone-light);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .lightbox-close {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--cream);
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s;
+  }
+
+  .lightbox-close:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* PLACEHOLDER IMAGES */
+  .obra-img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--cream-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: var(--stone);
+    text-align: center;
+    padding: 1rem;
+    min-height: 320px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+
+    section { padding: 4rem 1.2rem; }
+
+    .artesana-grid,
+    .encargo-grid,
+    .lightbox-inner { grid-template-columns: 1fr; gap: 2rem; }
+
+    .proceso-grid { grid-template-columns: 1fr; gap: 2rem; }
+
+    .btn-secondary { margin-left: 0; margin-top: 0.8rem; }
+
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+  }
+
+  /* ANIMATIONS */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-brand">El Taller de las Historias</a>
+  <ul class="nav-links">
+    <li><a href="#artesana">La Artesana</a></li>
+    <li><a href="#obras">Las Obras</a></li>
+    <li><a href="#encargo">Encargar una Pieza</a></li>
+    <li><a href="#proceso">El Proceso</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-pattern"></div>
+  <span class="ornament">✦ ✦ ✦</span>
+  <h1>El Taller<span>de las Historias</span></h1>
+  <p class="hero-tagline">
+    Mundos diminutos construidos con paciencia, cartón, y ese amor silencioso que solo los objetos hechos a mano pueden guardar.
+  </p>
+  <div class="hero-divider">artesanía hecha con alma</div>
+  <div>
+    <a href="#obras" class="btn-primary">Ver las Obras</a>
+    <a href="#encargo" class="btn-secondary">Encargar una Pieza</a>
+  </div>
+  <span class="scroll-hint">Descubrir</span>
+</section>
+
+<!-- ARTESANA -->
+<section id="artesana">
+  <div class="section-inner">
+    <div class="artesana-grid">
+      <div class="artesana-image-frame fade-in">
+        <div class="artesana-image-placeholder">
+          <span style="font-size:2rem; color:var(--stone-light)">✦</span>
+          <span>Foto de la artesana</span>
+        </div>
+      </div>
+      <div class="artesana-text fade-in">
+        <span class="section-label">La Artesana</span>
+        <h2>Una mujer que construye mundos donde otros ven cartón</h2>
+        <div class="section-divider">— ✦ —</div>
+        <p>Hay manos que no pueden estar quietas. Las suyas encuentran en cada trozo de cartón la promesa de una ventana, una chimenea, un tejado de escamas que algún duende podría llamar hogar.</p>
+        <p>Sin bocetos previos, sin moldes guardados. Cada pieza nace desde la intuición, desde una imagen que aparece sola y pide ser construida. Por eso cada obra es única: es la traducción de algo que ocurrió una sola vez.</p>
+        <blockquote class="artesana-quote">
+          "Ella no sabe exactamente lo que va a crear hasta que empieza a crearlo. Eso es lo que hace cada pieza irrepetible."
+        </blockquote>
+        <p>Trabaja con materiales reciclados, con retazos, con lo que la naturaleza y la vida cotidiana van dejando. Sus casitas hablan de bosques encantados, de navidades en pueblos nevados, de ese rincón íntimo donde las fábulas suceden todavía.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OBRAS -->
+<section id="obras">
+  <div class="section-inner">
+    <span class="section-label">Las Obras</span>
+    <h2>Cada pieza, una historia distinta</h2>
+    <div class="section-divider">— ✦ —</div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="todas">Todas</button>
+      <button class="filter-btn" data-filter="fantasia">Fantasía</button>
+      <button class="filter-btn" data-filter="navidad">Navidad</button>
+      <button class="filter-btn" data-filter="diorama">Dioramas</button>
+      <button class="filter-btn" data-filter="encargo">Encargos</button>
+    </div>
+
+    <div class="gallery-grid" id="gallery">
+
+      <!-- Obra 1 -->
+      <div class="obra-card fade-in" data-tags="fantasia">
+        <div class="obra-img-wrap">
+          <img src="casa_1.png" alt="...">
+          <span class="obra-badge badge-disponible">Disponible</span>
+        </div>
+        <div class="obra-info">
+          <p class="obra-nombre">La Casa del Bosque Antiguo</p>
+          <p class="obra-historia">Tejado de escamas verdes, chimenea coronada por un hongo rojo. Nació una tarde sin ningún plan.</p>
+          <p class="obra-materiales">Cartón · Pintura acrílica · Materiales reciclados</p>
+          <div class="obra-footer">
+            <span class="obra-estado">Disponible</span>
+            <button class="obra-cta" onclick="abrirLightbox('La Casa del Bosque Antiguo', 'Tejado de escamas verdes una por una, piedras negras modeladas a mano, un hongo amanita coronando la chimenea. Esta pieza tomó varias semanas y fue completamente espontánea.', 'Cartón · Pintura acrílica · Materiales reciclados', 'disponible', 'casa_1.png')">Ver más →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Obra 2 -->
+      <div class="obra-card fade-in" data-tags="fantasia">
+        <div class="obra-img-wrap">
+          <img src="casa_2.png" alt="...">
+          <span class="obra-badge badge-disponible">Disponible</span>
+        </div>
+        <div class="obra-info">
+          <p class="obra-nombre">El Refugio de la Bruja Buena</p>
+          <p class="obra-historia">Paredes de piedra pintadas una por una, tejado rojo, chimenea inclinada hacia el cielo.</p>
+          <p class="obra-materiales">Cartón · Pintura acrílica · Papel texturizado</p>
+          <div class="obra-footer">
+            <span class="obra-estado">Disponible</span>
+            <button class="obra-cta" onclick="abrirLightbox('El Refugio de la Bruja Buena', 'Cada piedra de la pared fue pintada individualmente para lograr el brillo metálico. Los tejados rojos con escamas en ángulos distintos se construyeron pieza por pieza.', 'Cartón · Pintura acrílica · Papel texturizado', 'disponible', 'casa_2.png')">Ver más →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Obra 3 -->
+      <div class="obra-card fade-in" data-tags="fantasia">
+        <div class="obra-img-wrap">
+          <img src="casa_3.png" alt="...">
+          <span class="obra-badge badge-vendida">En su nuevo hogar</span>
+        </div>
+        <div class="obra-info">
+          <p class="obra-nombre">La Cabaña de los Hongos Rojos</p>
+          <p class="obra-historia">Ventana con maceta de hongos amanita. Tejado de tablas de madera envejecida.</p>
+          <p class="obra-materiales">Cartón · Pintura · Musgo artificial · Hongos decorativos</p>
+          <div class="obra-footer">
+            <span class="obra-estado" style="color:var(--stone)">En su nuevo hogar ♥</span>
+            <button class="obra-cta" onclick="abrirLightbox('La Cabaña de los Hongos Rojos', 'Esta cabaña ya encontró su hogar definitivo. El tejado de tablillas individuales tomó días de trabajo minucioso. La ventana con la maceta de hongos fue el toque que lo hizo todo.', 'Cartón · Pintura · Musgo artificial · Hongos decorativos', 'vendida', 'casa_3.png')">Ver más →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Obra 4 -->
+      <div class="obra-card fade-in" data-tags="fantasia">
+        <div class="obra-img-wrap">
+          <img src="casa_4.png" alt="...">
+          <span class="obra-badge badge-disponible">Disponible</span>
+        </div>
+        <div class="obra-info">
+          <p class="obra-nombre">La Casa de las Flores de Invierno</p>
+          <p class="obra-historia">Paredes blancas redondeadas con flores pintadas a mano. Puerta roja de arco.</p>
+          <p class="obra-materiales">Cartón · Pintura acrílica · Piedras pequeñas</p>
+          <div class="obra-footer">
+            <span class="obra-estado">Disponible</span>
+            <button class="obra-cta" onclick="abrirLightbox('La Casa de las Flores de Invierno', 'La forma redondeada de las paredes fue un reto estructural. Las flores fueron pintadas directamente sobre la superficie con pincel fino. La base de piedras negras tomó horas de colocación individual.', 'Cartón · Pintura acrílica · Piedras pequeñas', 'disponible', 'casa_4.png')">Ver más →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Obra 5 -->
+      <div class="obra-card fade-in" data-tags="navidad">
+        <div class="obra-img-wrap">
+          <img src="casa_5.png" alt="...">
+          <span class="obra-badge badge-disponible">Disponible</span>
+        </div>
+        <div class="obra-info">
+          <p class="obra-nombre">Noche de Nieve y Tejados Rojos</p>
+          <p class="obra-historia">Cada escama pintada a mano con efecto nieve. Chimenea de ladrillo con hollín blanco.</p>
+          <p class="obra-materiales">Cartón · Pintura · Efecto nieve</p>
+          <div class="obra-footer">
+            <span class="obra-estado">Disponible</span>
+            <button class="obra-cta" onclick="abrirLightbox('Noche de Nieve y Tejados Rojos', 'Las escamas del tejado fueron cortadas y pegadas una a una. El efecto nieve se logró con una técnica especial sobre la pintura roja todavía húmeda. La chimenea de ladrillo tiene relieves individuales.', 'Cartón · Pintura · Efecto nieve', 'disponible', 'casa_5.png')">Ver más →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Obra 6 -->
+      <div class="obra-card fade-in" data-tags="navidad">
+        <div class="obra-img-wrap">
+          <img src="casa_6.png" alt="...">
+          <span class="obra-badge badge-vendida">En su nuevo hogar</span>
+        </div>
+        <div class="obra-info">
+          <p class="obra-nombre">Aldea de Cuento Navideño</p>
+          <p class="obra-historia">Cuatro casas distintas en un único escenario nevado. Un pueblo entero en miniatura.</p>
+          <p class="obra-materiales">Cartón · Pintura · Nieve artificial · Decoraciones</p>
+          <div class="obra-footer">
+            <span class="obra-estado" style="color:var(--stone)">En su nuevo hogar ♥</span>
+            <button class="obra-cta" onclick="abrirLightbox('Aldea de Cuento Navideño', 'Este fue el proyecto más ambicioso: cuatro estilos arquitectónicos distintos conviviendo en una sola base. Cada casa tiene su propia personalidad: una de entramado, una de piedra amarilla, una de ladrillo rojo, una campestre. Tomó semanas.', 'Cartón · Pintura · Nieve artificial · Decoraciones navideñas', 'vendida', 'casa_6.png')">Ver más →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Obra 7 -->
+      <div class="obra-card fade-in" data-tags="diorama">
+        <div class="obra-img-wrap">
+          <img src="casa_7.png" alt="...">
+          <span class="obra-badge badge-disponible">Disponible</span>
+        </div>
+        <div class="obra-info">
+          <p class="obra-nombre">El Portal de Navidad</p>
+          <p class="obra-historia">Marco de piedra con escena navideña interior. Una niña, un árbol dorado, moños y muérdago.</p>
+          <p class="obra-materiales">Cartón · Yute · Cuerda · Cintas · Figuras decorativas</p>
+          <div class="obra-footer">
+            <span class="obra-estado">Disponible</span>
+            <button class="obra-cta" onclick="abrirLightbox('El Portal de Navidad', 'El marco exterior de piedra gris fue construido ladrillo a ladrillo. El interior es un mundo dentro de otro: yute de fondo, nieve artificial, una pequeña figura de niña, un árbol dorado. El lazo verde esmeralda fue el toque final.', 'Cartón · Yute · Cuerda · Cintas · Figuras decorativas · Pino artificial', 'disponible', 'casa_7.png')">Ver más →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Obra 8 -->
+      <div class="obra-card fade-in" data-tags="diorama">
+        <div class="obra-img-wrap">
+          <img src="casa_8.png" alt="...">
+          <span class="obra-badge badge-disponible">Disponible</span>
+        </div>
+        <div class="obra-info">
+          <p class="obra-nombre">La Esfera de la Luna de Invierno</p>
+          <p class="obra-historia">Una luna de plata en fondo de yute, nieve, frutos rojos, y una cuerda de sisal guardando el mundo.</p>
+          <p class="obra-materiales">Yute · Sisal · Musgo · Frutos artificiales · Nieve · Cinta satén</p>
+          <div class="obra-footer">
+            <span class="obra-estado">Disponible</span>
+            <button class="obra-cta" onclick="abrirLightbox('La Esfera de la Luna de Invierno', 'Un diorama circular enmarcado en cuerda de sisal. El fondo de yute lleva una luna recortada en plata. El musgo, la nieve artificial y los frutos rojos crean un bosque en miniatura. El lazo verde esmeralda y los adornos navideños coronan la pieza.', 'Yute · Sisal · Musgo · Frutos artificiales · Nieve · Cinta satén · Adornos', 'disponible', 'casa_8.png')">Ver más →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Obra 9 -->
+      <div class="obra-card fade-in" data-tags="fantasia">
+        <div class="obra-img-wrap">
+          <img src="casa_verde_rustica.jpeg" alt="...">
+          <span class="obra-badge badge-disponible">Disponible</span>
+        </div>
+        <div class="obra-info">
+          <p class="obra-nombre">La Torre del Bosque Prohibido</p>
+          <p class="obra-historia">Tres niveles de tejados verdes, ventanas rojas, ángulos que desafían toda lógica arquitectónica.</p>
+          <p class="obra-materiales">Cartón · Pintura acrílica · Técnica de envejecido</p>
+          <div class="obra-footer">
+            <span class="obra-estado">Disponible</span>
+            <button class="obra-cta" onclick="abrirLightbox('La Torre del Bosque Prohibido', 'Una construcción de tres plantas con tejados en ángulos imposibles. Los tonos verdes del musgo sobre madera oscura fueron logrados con varias capas de pintura y envejecido manual. Las ventanas rojas dan ese contraste que la hace inquietante y hermosa a la vez.', 'Cartón · Pintura acrílica · Técnica de envejecido manual', 'disponible', 'casa_verde_rustica.jpeg')">Ver más →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Obra 10 -->
+      <div class="obra-card fade-in" data-tags="encargo">
+        <div class="obra-img-wrap">
+          <img src="casa_verde_rustica_2.jpeg" alt="...">
+          <span class="obra-badge badge-encargo">Encargo especial</span>
+        </div>
+        <div class="obra-info">
+          <p class="obra-nombre">La Casa de Campo con Jardín</p>
+          <p class="obra-historia">Encargo personalizado: una casita inglesa con árbol seco real y camino de grava.</p>
+          <p class="obra-materiales">Cartón · Grava · Árbol seco natural · Musgo · Malla metálica</p>
+          <div class="obra-footer">
+            <span class="obra-estado" style="color:var(--gold)">Encargo especial</span>
+            <button class="obra-cta" onclick="abrirLightbox('La Casa de Campo con Jardín', 'Este fue un encargo muy especial: recrear el estilo de una casita de campo inglesa. El árbol de la izquierda es una rama seca real pintada de blanco. El camino de grava fue colocado piedra por piedra. La malla metálica en ventanas y puertas le da realismo excepcional.', 'Cartón · Grava real · Árbol seco natural · Musgo real · Malla metálica · Pintura', 'encargo', 'casa_verde_rustica_2.jpeg')">Ver más →</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ENCARGO -->
+<section id="encargo">
+  <div class="section-inner">
+    <span class="section-label">Encargar una Pieza</span>
+    <h2>¿Tienes una historia que quieres ver construida?</h2>
+    <div class="section-divider" style="color:#5a4e3a">— ✦ —</div>
+    <p class="encargo-intro">
+      No necesitas saber exactamente lo que quieres. Con una idea, una palabra, un sentimiento, ella construye el resto. Cuéntanos y conversamos.
+    </p>
+
+    <div class="encargo-grid">
+      <div>
+        <div class="form-group">
+          <label class="form-label">¿Qué tienes en mente?</label>
+          <textarea class="form-textarea" id="f-idea" placeholder="Una casita en el bosque, una fuente de agua rodeada de flores, una escena navideña... lo que sea que imaginás."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">¿Colores, materiales o elementos que te gusten?</label>
+          <input type="text" class="form-input" id="f-materiales" placeholder="Colores tierra, piedra, musgo, algo rústico... (opcional)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">¿Es para regalo o para vos?</label>
+          <select class="form-select" id="f-destino">
+            <option value="">Seleccioná una opción</option>
+            <option value="regalo">Es un regalo especial</option>
+            <option value="personal">Es para mí</option>
+            <option value="decoracion">Es para decorar un espacio</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">¿Tenés alguna fecha en mente?</label>
+          <input type="text" class="form-input" id="f-fecha" placeholder="Por ejemplo: para diciembre, sin apuro, etc. (opcional)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tu nombre</label>
+          <input type="text" class="form-input" id="f-nombre" placeholder="¿Cómo te llamas?">
+        </div>
+        <button class="btn-whatsapp" onclick="enviarWhatsApp()">
+          <span class="wa-icon">💬</span>
+          Enviar mi idea por WhatsApp
+        </button>
+      </div>
+
+      <div class="encargo-aside">
+        <h3>Lo que podés pedirle</h3>
+        <ul>
+          <li>Casitas de cuento con el estilo que imagines: bosque, medieval, fantástico, rústico</li>
+          <li>Fuentes de agua, jardines en miniatura, escenas con personajes</li>
+          <li>Escenas navideñas y dioramas para regalar o decorar</li>
+          <li>Reproducciones de casas reales o lugares con significado especial</li>
+          <li>Cualquier idea que tengas en mente, aunque todavía no tenga nombre</li>
+          <li>Sugerí los materiales que querés incluir o dejá que ella elija todo</li>
+        </ul>
+        <div class="encargo-note">
+          Cada encargo es una conversación. Los tiempos varían según la complejidad de la pieza — algunas toman días, otras semanas. Eso es parte de lo que las hace especiales.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso">
+  <div class="section-inner">
+    <span class="section-label">El Proceso</span>
+    <h2>Cómo nace cada mundo</h2>
+    <div class="section-divider">— ✦ —</div>
+
+    <div class="proceso-grid">
+      <div class="proceso-item fade-in">
+        <span class="proceso-num">I</span>
+        <p class="proceso-title">La Idea</p>
+        <p class="proceso-desc">No hay boceto previo. Una imagen llega, y las manos empiezan a dar forma antes de que la mente termine de entenderla.</p>
+      </div>
+      <div class="proceso-item fade-in">
+        <span class="proceso-num">II</span>
+        <p class="proceso-title">La Construcción</p>
+        <p class="proceso-desc">El cartón se corta, se dobla, se pega. Cada piedra, cada teja, cada ladrillo se coloca uno por uno. Días, a veces semanas.</p>
+      </div>
+      <div class="proceso-item fade-in">
+        <span class="proceso-num">III</span>
+        <p class="proceso-title">El Alma</p>
+        <p class="proceso-desc">La pintura, el envejecido, los detalles finales. Ese momento en que la pieza deja de ser cartón y se convierte en algo que cuenta una historia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-brand">El Taller de las Historias</span>
+  <p class="footer-tagline">Mundos diminutos hechos con paciencia y amor</p>
+  <a href="https://wa.me/50686980329" class="footer-wa" target="_blank">💬 Contactar por WhatsApp</a>
+  <br>
+  <span class="footer-copy">Artesanía hecha a mano · Costa Rica · Cada pieza es única e irrepetible</span>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="cerrarLightbox(event)">
+  <button class="lightbox-close" onclick="cerrarLightbox(null, true)">✕</button>
+  <div class="lightbox-inner">
+    <img id="lb-img" style="width:100%; display:block; max-height:500px; object-fit:cover;" src="" alt="">
+    <div class="lightbox-info">
+      <p class="obra-nombre lightbox-nombre" id="lb-nombre"></p>
+      <div class="section-divider" style="color:#5a4e3a; text-align:left; margin:0.8rem 0">— ✦ —</div>
+      <p class="lightbox-historia" id="lb-historia"></p>
+      <p class="obra-materiales" style="color:var(--stone-light); margin-bottom:1.5rem" id="lb-materiales"></p>
+      <button class="btn-whatsapp" id="lb-wa" onclick="consultarDesdelightbox()">
+        <span class="wa-icon">💬</span>
+        Consultar por esta pieza
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // FILTROS
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.obra-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach(card => {
+        const tags = card.dataset.tags || '';
+        card.style.display = (filter === 'todas' || tags.includes(filter)) ? 'flex' : 'none';
+      });
+    });
+  });
+
+  // LIGHTBOX
+  let currentObra = {};
+
+  function abrirLightbox(nombre, historia, materiales, estado, imagen) {
+    currentObra = { nombre, historia, materiales, estado };
+    document.getElementById('lb-img').src = imagen;
+    document.getElementById('lb-img').alt = nombre;
+    document.getElementById('lb-nombre').textContent = nombre;
+    document.getElementById('lb-historia').textContent = historia;
+    document.getElementById('lb-materiales').textContent = materiales;
+    const waBtn = document.getElementById('lb-wa');
+    if (estado === 'vendida') {
+      waBtn.textContent = 'Consultar por una pieza similar';
+    } else {
+      waBtn.innerHTML = '<span class="wa-icon">💬</span> Consultar por esta pieza';
+    }
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function cerrarLightbox(event, force) {
+    if (force || (event && event.target === document.getElementById('lightbox'))) {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') cerrarLightbox(null, true);
+  });
+
+  function consultarDesdelightbox() {
+    const numero = '50686980329';
+    const msg = `Hola! Me interesa la obra "${currentObra.nombre}" que vi en el sitio web. ¿Podría darme más información?`;
+    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+
+  // FORMULARIO WHATSAPP
+  function enviarWhatsApp() {
+    const idea = document.getElementById('f-idea').value.trim();
+    const materiales = document.getElementById('f-materiales').value.trim();
+    const destino = document.getElementById('f-destino').value;
+    const fecha = document.getElementById('f-fecha').value.trim();
+    const nombre = document.getElementById('f-nombre').value.trim();
+
+    if (!idea) {
+      alert('Por favor contanos un poco sobre tu idea antes de enviar.');
+      return;
+    }
+
+    const destinoTexto = {
+      'regalo': 'un regalo especial',
+      'personal': 'uso personal',
+      'decoracion': 'decorar un espacio',
+      '': 'no especificado'
+    }[destino];
+
+    let msg = `Hola! Me llegaron desde el sitio web de El Taller de las Historias.\n\n`;
+    if (nombre) msg += `*Mi nombre:* ${nombre}\n\n`;
+    msg += `*Mi idea:*\n${idea}\n\n`;
+    if (materiales) msg += `*Colores y materiales que me gustan:* ${materiales}\n\n`;
+    if (destino) msg += `*Es para:* ${destinoTexto}\n\n`;
+    if (fecha) msg += `*Fecha en mente:* ${fecha}\n\n`;
+    msg += `Quedo atento/a a su respuesta. ¡Gracias!`;
+
+    const numero = '50686980329';
+    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+
+  // FADE IN ON SCROLL
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
